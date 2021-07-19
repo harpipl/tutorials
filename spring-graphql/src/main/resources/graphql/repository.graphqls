@@ -1,0 +1,43 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+enum Direction {
+    ASC
+    DESC
+}
+
+enum VisibilityType {
+    PRIVATE,
+    PUBLIC
+}
+
+input Pagination {
+    sort: String
+    order: Direction
+    start: Int
+    size: Int
+}
+
+input WorkspaceFilter {
+    id: ID
+    name: String
+    nameLike: String
+}
+
+type Workspace {
+    id: ID!
+    name: String!
+    description: String
+}
+
+# Root
+type Query {
+    findAllWorkspaces(inputFilter: WorkspaceFilter, inputPagination: Pagination): [Workspace]!
+}
+
+# Root
+type Mutation {
+    createWorkspace(name: String!, description: String, visibility: VisibilityType!): Workspace!
+}
