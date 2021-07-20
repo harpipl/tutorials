@@ -1,0 +1,7 @@
+version: "3.4"
+
+services:
+  app:
+    image: harpipl.jfrog.io/tutorials/tutorials-spring-graphql:1.0-SNAPSHOT
+    ports:
+      - "8080:8080"

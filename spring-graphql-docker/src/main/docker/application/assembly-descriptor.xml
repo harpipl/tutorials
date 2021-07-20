@@ -1,0 +1,19 @@
+<assembly>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>pl.harpi:spring-graphql</include>
+            </includes>
+            <outputDirectory>\</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/config</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>\</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

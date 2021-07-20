@@ -1,0 +1,17 @@
+<assembly>
+    <id>config</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>src/main/config</directory>
+            <includes>
+                <include>ap-config/*</include>
+                <include>as-config/*</include>
+            </includes>
+            <outputDirectory>\</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
