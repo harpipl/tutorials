@@ -1,0 +1,16 @@
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    container_name: db-tutorials-data-model-local-dev
+    restart: always
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRESQL_DATABASE=demo
+      - POSTGRESQL_USERNAME=demo
+      - POSTGRESQL_PASSWORD=demo
+    networks:
+      - app-tier
+networks:
+  app-tier:
+    driver: bridge

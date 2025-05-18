@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="002" author="harpipl">
+        <createTable tableName="PERSON_V" schemaName="demo">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="VER" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="RECORD_FROM" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECORD_TO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALID_FROM" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALID_TO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IDENTITY_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INSTANCE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
