@@ -8,7 +8,7 @@ import pl.harpi.tutorials.common.temporal.domain.model.TemporalIdentity;
 import pl.harpi.tutorials.common.temporal.domain.model.TemporalInstance;
 import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
 
-public interface BitemporalEntityRepository<
+public interface BitemporalRepository<
     I extends Serializable,
     L extends Serializable,
     TD extends TemporalIdentity<I, L>,

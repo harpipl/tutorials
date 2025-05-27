@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.harpi.tutorials.common.temporal.domain.port.repository.BitemporalEntityRepository;
-import pl.harpi.tutorials.common.base.infrastructure.entity.JpaInterval;
+import pl.harpi.tutorials.common.temporal.domain.port.repository.BitemporalRepository;
+import pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval;
 import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.CreatePersonDto;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.FindAllPersonDto;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.UpdatePersonDto;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.mappers.PersonMapper;
-import pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.entity.Person;
+import pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.jpa.Person;
 
 @RestController
 @RequestMapping("/api")
 public class PersonController {
   private final PersonMapper personMapper;
-  private final BitemporalEntityRepository<Long, String, Person.Identity, Person.Instance> personRepository;
+  private final BitemporalRepository<Long, String, Person.Identity, Person.Instance> personRepository;
 
   public PersonController(
       PersonMapper personMapper,
-      @Qualifier("personRepository")
-          BitemporalEntityRepository<Long, String, Person.Identity, Person.Instance> personRepository) {
+      @Qualifier("personBitemporalRepository")
+      BitemporalRepository<Long, String, Person.Identity, Person.Instance> personRepository) {
     this.personMapper = personMapper;
     this.personRepository = personRepository;
   }

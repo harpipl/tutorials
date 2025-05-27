@@ -1,7 +1,7 @@
-package pl.harpi.tutorials.common.temporal.infrastructure.entity;
+package pl.harpi.tutorials.common.temporal.infrastructure.jpa;
 
-import static pl.harpi.tutorials.common.base.infrastructure.entity.JpaInterval.TXT_END;
-import static pl.harpi.tutorials.common.base.infrastructure.entity.JpaInterval.TXT_START;
+import static pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval.TXT_END;
+import static pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval.TXT_START;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -14,8 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import pl.harpi.tutorials.common.base.infrastructure.entity.JpaInterval;
-import pl.harpi.tutorials.common.base.infrastructure.entity.MutablePersistentEntity;
+import pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval;
+import pl.harpi.tutorials.common.base.infrastructure.jpa.MutablePersistentEntity;
 import pl.harpi.tutorials.common.temporal.domain.model.BitemporalVersion;
 
 @Getter

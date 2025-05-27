@@ -1,4 +1,4 @@
-package pl.harpi.tutorials.common.base.infrastructure.entity;
+package pl.harpi.tutorials.common.base.infrastructure.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

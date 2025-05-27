@@ -1,4 +1,4 @@
-package pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.entity;
+package pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,9 +6,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.harpi.tutorials.common.temporal.infrastructure.entity.AbstractBitemporalVersion;
-import pl.harpi.tutorials.common.temporal.infrastructure.entity.AbstractTemporalIdentity;
-import pl.harpi.tutorials.common.temporal.infrastructure.entity.AbstractTemporalInstance;
+import pl.harpi.tutorials.common.temporal.infrastructure.jpa.AbstractBitemporalVersion;
+import pl.harpi.tutorials.common.temporal.infrastructure.jpa.AbstractTemporalIdentity;
+import pl.harpi.tutorials.common.temporal.infrastructure.jpa.AbstractTemporalInstance;
 
 public class Person {
   @Getter

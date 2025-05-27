@@ -1,4 +1,4 @@
-package pl.harpi.tutorials.common.base.infrastructure.entity;
+package pl.harpi.tutorials.common.base.infrastructure.jpa;
 
 import static java.time.temporal.ChronoField.DAY_OF_MONTH;
 import static java.time.temporal.ChronoField.HOUR_OF_DAY;

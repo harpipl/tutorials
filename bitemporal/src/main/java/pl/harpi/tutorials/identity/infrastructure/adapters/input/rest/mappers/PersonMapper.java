@@ -8,7 +8,7 @@ import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.CreatePersonDto;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.FindAllPersonDto;
 import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.UpdatePersonDto;
-import pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.entity.Person;
+import pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.jpa.Person;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PersonMapper {

@@ -1,4 +1,4 @@
-package pl.harpi.tutorials.common.temporal.infrastructure.repository;
+package pl.harpi.tutorials.common.temporal.infrastructure.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,20 +18,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import pl.harpi.tutorials.common.temporal.domain.exception.TemporalEntityException;
 import pl.harpi.tutorials.common.temporal.domain.model.TemporalIdentity;
-import pl.harpi.tutorials.common.temporal.domain.port.repository.BitemporalEntityRepository;
-import pl.harpi.tutorials.common.temporal.infrastructure.entity.AbstractBitemporalVersion;
-import pl.harpi.tutorials.common.temporal.infrastructure.entity.AbstractTemporalInstance;
-import pl.harpi.tutorials.common.base.infrastructure.entity.JpaInterval;
+import pl.harpi.tutorials.common.temporal.domain.port.repository.BitemporalRepository;
+import pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval;
 import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
 import pl.harpi.tutorials.common.util.DateHelper;
 
 @Getter
 @RequiredArgsConstructor
-public class JpaBitemporalEntityRepository<
+public class JpaBitemporalRepository<
         TD extends TemporalIdentity<Long, String>,
         TI extends AbstractTemporalInstance,
         TV extends AbstractBitemporalVersion<TI>>
-    implements BitemporalEntityRepository<Long, String, TD, TI> {
+    implements BitemporalRepository<Long, String, TD, TI> {
   @PersistenceContext private EntityManager entityManager;
 
   private final Class<TD> clazzIdentity;

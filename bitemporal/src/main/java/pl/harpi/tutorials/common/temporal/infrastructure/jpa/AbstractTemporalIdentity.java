@@ -1,11 +1,11 @@
-package pl.harpi.tutorials.common.temporal.infrastructure.entity;
+package pl.harpi.tutorials.common.temporal.infrastructure.jpa;
 
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import pl.harpi.tutorials.common.base.infrastructure.entity.ImmutablePersistentEntity;
+import pl.harpi.tutorials.common.base.infrastructure.jpa.ImmutablePersistentEntity;
 import pl.harpi.tutorials.common.temporal.domain.model.TemporalIdentity;
 
 @Getter
