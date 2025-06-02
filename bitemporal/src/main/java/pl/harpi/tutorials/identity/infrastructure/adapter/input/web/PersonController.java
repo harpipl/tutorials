@@ -1,4 +1,4 @@
-package pl.harpi.tutorials.identity.infrastructure.adapters.input.rest;
+package pl.harpi.tutorials.identity.infrastructure.adapter.input.web;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,39 +14,35 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.harpi.tutorials.common.temporal.domain.port.repository.BitemporalRepository;
 import pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval;
-import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
-import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.CreatePersonDto;
-import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.FindAllPersonDto;
-import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.dto.UpdatePersonDto;
-import pl.harpi.tutorials.identity.infrastructure.adapters.input.rest.mappers.PersonMapper;
-import pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.jpa.Person;
+import pl.harpi.tutorials.common.util.DateHelper;
+import pl.harpi.tutorials.identity.domain.model.Person;
+import pl.harpi.tutorials.identity.domain.model.PersonUpdate;
+import pl.harpi.tutorials.identity.domain.port.input.PersonUseCase;
+import pl.harpi.tutorials.identity.infrastructure.adapter.input.web.dto.CreatePersonDto;
+import pl.harpi.tutorials.identity.infrastructure.adapter.input.web.dto.FindAllPersonDto;
+import pl.harpi.tutorials.identity.infrastructure.adapter.input.web.dto.UpdatePersonDto;
 
 @RestController
 @RequestMapping("/api")
 public class PersonController {
   private final PersonMapper personMapper;
-  private final BitemporalRepository<Long, String, Person.Identity, Person.Instance> personRepository;
+  private final PersonUseCase personUseCase;
 
   public PersonController(
       PersonMapper personMapper,
-      @Qualifier("personBitemporalRepository")
-      BitemporalRepository<Long, String, Person.Identity, Person.Instance> personRepository) {
+      @Qualifier("personBitemporalUseCase") PersonUseCase personUseCase) {
     this.personMapper = personMapper;
-    this.personRepository = personRepository;
+    this.personUseCase = personUseCase;
   }
 
   @PostMapping("/person/{validDate}")
   public ResponseEntity<String> createPerson(
-          @RequestBody CreatePersonDto createPersonDto, @PathVariable String validDate) {
-    val personIdentity =
-        personMapper.identityFromCreatePersonDto(UUID.randomUUID().toString(), createPersonDto);
-    val personInstance = personMapper.instanceFromCreatePersonDto(createPersonDto);
+      @RequestBody CreatePersonDto createPersonDto, @PathVariable String validDate) {
 
     val validDateDT = LocalDateTime.parse(validDate, JpaInterval.PATH_DATE_TIME);
-
-    val logicalId = personRepository.insert(personIdentity, personInstance, validDateDT);
+    val personCreate = personMapper.toDomain(UUID.randomUUID().toString(), createPersonDto);
+    val logicalId = personUseCase.insert(personCreate, validDateDT);
 
     return ResponseEntity.ok(logicalId);
   }
@@ -56,13 +52,11 @@ public class PersonController {
       @RequestBody UpdatePersonDto updatePersonDto,
       @PathVariable String logicalId,
       @PathVariable String validDate) {
-    val personInstance = personMapper.instanceFromUpdatePersonDto(updatePersonDto);
 
     val validDateDT = LocalDateTime.parse(validDate, JpaInterval.PATH_DATE_TIME);
+    val personUpdate = personMapper.toDomain(updatePersonDto);
 
-    val personId = personRepository.findIdByLogicalId(logicalId);
-
-    personRepository.update(personId, personInstance, validDateDT, JpaInterval.MAX_DATE_TIME);
+    personUseCase.update(logicalId, personUpdate, validDateDT, JpaInterval.MAX_DATE_TIME);
 
     return ResponseEntity.ok(logicalId);
   }
@@ -73,39 +67,34 @@ public class PersonController {
       @PathVariable String logicalId,
       @PathVariable String validDateFrom,
       @PathVariable String validDateTo) {
-    val personInstance = personMapper.instanceFromUpdatePersonDto(updatePersonDto);
 
     val validDateFromDT = LocalDateTime.parse(validDateFrom, JpaInterval.PATH_DATE_TIME);
     val validDateToDT = LocalDateTime.parse(validDateTo, JpaInterval.PATH_DATE_TIME);
+    val personUpdate = new PersonUpdate(updatePersonDto.firstName(), updatePersonDto.lastName());
 
-    val personId = personRepository.findIdByLogicalId(logicalId);
-
-    personRepository.update(personId, personInstance, validDateFromDT, validDateToDT);
+    personUseCase.update(logicalId, personUpdate, validDateFromDT, validDateToDT);
 
     return ResponseEntity.ok(logicalId);
   }
 
-  private List<FindAllPersonDto> convert(
-      List<RecordData<Long, String, Person.Identity, Person.Instance>> allPersons) {
-    
-    return personMapper.findAllPersonDto(allPersons);
+  private List<FindAllPersonDto> convertPersonData(List<Person> allPersons) {
+    return personMapper.toDto(allPersons);
   }
 
   private ResponseEntity<List<FindAllPersonDto>> getPerson(
       String logicalId, LocalDateTime recordDate, LocalDateTime validDate) {
 
-    val id = personRepository.findIdByLogicalId(logicalId);
-    val allPersons = personRepository.find(id, recordDate, validDate);
+    val allPersons = personUseCase.find(logicalId, recordDate, validDate);
 
-    return ResponseEntity.ok(convert(allPersons));
+    return ResponseEntity.ok(convertPersonData(allPersons.stream().toList()));
   }
 
   private ResponseEntity<List<FindAllPersonDto>> getPersons(
       LocalDateTime recordDate, LocalDateTime validDate) {
 
-    val allPersons = personRepository.findAll(recordDate, validDate, PageRequest.of(0, 3));
+    val allPersons = personUseCase.findAll(recordDate, validDate, PageRequest.of(0, 3));
 
-    return ResponseEntity.ok(convert(allPersons));
+    return ResponseEntity.ok(convertPersonData(allPersons));
   }
 
   @GetMapping("/person/{logicalId}/{validDate}")
@@ -134,5 +123,17 @@ public class PersonController {
     val validDateDT = LocalDateTime.parse(validDate, JpaInterval.PATH_DATE_TIME);
 
     return getPersons(recordDateDT, validDateDT);
+  }
+
+  @GetMapping("/persons/search/{lastName}")
+  public ResponseEntity<List<FindAllPersonDto>> getPersonsByLastName(
+      @PathVariable String lastName) {
+    return ResponseEntity.ok(
+        convertPersonData(
+            personUseCase.findAllByLastName(
+                lastName,
+                DateHelper.getCurrentDateTime(),
+                DateHelper.getCurrentDateTime(),
+                PageRequest.of(0, 3))));
   }
 }

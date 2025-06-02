@@ -3,6 +3,8 @@ package pl.harpi.tutorials.common.temporal.domain.port.repository;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import pl.harpi.tutorials.common.temporal.domain.model.TemporalIdentity;
 import pl.harpi.tutorials.common.temporal.domain.model.TemporalInstance;
@@ -19,7 +21,7 @@ public interface BitemporalRepository<
 
   Long findIdByLogicalId(L logicalId);
 
-  List<RecordData<I, L, TD, TI>> find(I id, LocalDateTime recordDate, LocalDateTime validDate);
+  Optional<RecordData<I, L, TD, TI>> find(I id, LocalDateTime recordDate, LocalDateTime validDate);
 
   List<RecordData<I, L, TD, TI>> findAll(
       LocalDateTime recordDate, LocalDateTime validDate, Pageable pageable);

@@ -1,4 +1,4 @@
-package pl.harpi.tutorials.identity.infrastructure.adapters.output.persistence.jpa;
+package pl.harpi.tutorials.identity.infrastructure.adapter.output.persistence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import pl.harpi.tutorials.common.temporal.infrastructure.jpa.AbstractBitemporalV
 import pl.harpi.tutorials.common.temporal.infrastructure.jpa.AbstractTemporalIdentity;
 import pl.harpi.tutorials.common.temporal.infrastructure.jpa.AbstractTemporalInstance;
 
-public class Person {
+public class PersonEntity {
   @Getter
   @Setter
   @Entity

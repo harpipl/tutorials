@@ -10,17 +10,19 @@ import jakarta.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval;
 import pl.harpi.tutorials.common.temporal.domain.exception.TemporalEntityException;
+import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
 import pl.harpi.tutorials.common.temporal.domain.model.TemporalIdentity;
 import pl.harpi.tutorials.common.temporal.domain.port.repository.BitemporalRepository;
-import pl.harpi.tutorials.common.base.infrastructure.jpa.JpaInterval;
-import pl.harpi.tutorials.common.temporal.domain.model.RecordData;
 import pl.harpi.tutorials.common.util.DateHelper;
 
 @Getter
@@ -243,7 +245,7 @@ public class JpaBitemporalRepository<
   }
 
   @Override
-  public List<RecordData<Long, String, TD, TI>> find(Long id, LocalDateTime recordDate, LocalDateTime validDate) {
+  public Optional<RecordData<Long, String, TD, TI>> find(Long id, LocalDateTime recordDate, LocalDateTime validDate) {
     val q = prepareQuery();
 
     val paramId = q.cb.parameter(Long.class, "id");
@@ -270,7 +272,7 @@ public class JpaBitemporalRepository<
             .setParameter(paramRecordDate.getName(), recordDate)
             .setParameter(paramValidDate.getName(), validDate);
 
-    return fetchObjects(query);
+    return fetchObjects(query).stream().findFirst();
   }
 
   @Override
